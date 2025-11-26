@@ -183,7 +183,7 @@ class AbstractH5Writer:
         maxshape = tuple([None] + list(data.shape))
         shape = tuple([self._stack_length] + list(data.shape))
         dtype = data.dtype
-        if dtype.type is numpy.string_:
+        if dtype.type is numpy.bytes_:
             dtype = h5py.special_dtype(vlen=str)
         nbytes_chunk = numpy.prod(shape) * dtype.itemsize
         if nbytes_chunk > CHUNKSIZE_MIN_IN_BYTES:
@@ -218,7 +218,7 @@ class AbstractH5Writer:
         self._f.create_dataset(
             name, shape, maxshape=maxshape, dtype=dtype, chunks=chunks
         )
-        self._f[name].attrs.modify("axes", [numpy.string_(axes)])
+        self._f[name].attrs.modify("axes", [numpy.bytes_(axes)])
         return 0
 
     def _is_stack(self, name):
